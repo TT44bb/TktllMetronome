@@ -3,8 +3,6 @@ package me.t4b.tktllmetronome;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
@@ -46,18 +44,19 @@ public class main extends Activity {
     /**
      * Updates the UI with new values
      */
-    private void updateUI(){
-        TextView field = (TextView)findViewById(R.id.bpmValue);
-        field.setText(String.valueOf((int)(Tktll.getPatternsPerSecond()*60+0.5)));
+    private void updateUI() {
+        TextView field = (TextView) findViewById(R.id.bpmValue);
+        field.setText(String.valueOf((int) (Tktll.getPatternsPerSecond() * 60 + 0.5)));
         field = (TextView) findViewById(R.id.tempoName);
         field.setText(classicalTempos.getName(this, (int) (Tktll.getPatternsPerSecond() * 60 + 0.5)));
     }
 
     /**
-     * Handles speed changes
-     * @param diff
+     * Handles bpm changes
+     *
+     * @param diff bpm change in beats per minute
      */
-    public void incr(int diff){
+    public void incr(int diff) {
         Tktll.incr(diff);
         updateUI();
     }
@@ -65,35 +64,67 @@ public class main extends Activity {
 
     //UI callbacks
 
-    public void toggleTktll(View v){
+    /**
+     * Toggle button
+     * @param v
+     */
+    public void toggleTktll(View v) {
         Tktll.toggle();
     }
 
-    public void incr(View v){
+    /**
+     * Increase bpm by 1
+     * @param v
+     */
+    public void incr(View v) {
         incr(1);
     }
 
-    public void incrL(View v){
+    /**
+     * Increase bpm by 10
+     * @param v
+     */
+    public void incrL(View v) {
         incr(10);
     }
 
-    public void incrXL(View v){
+    /**
+     * Increase bpm by 30
+     * @param v
+     */
+    public void incrXL(View v) {
         incr(30);
     }
 
-    public void decr(View v){
+    /**
+     * Decrease bpm by 1
+     * @param v
+     */
+    public void decr(View v) {
         incr(-1);
     }
 
-    public void decrL(View v){
+    /**
+     * Decrease bpm by 10
+     * @param v
+     */
+    public void decrL(View v) {
         incr(-10);
     }
 
-    public void decrXL(View v){
+    /**
+     * Decrease bpm by 30
+     * @param v
+     */
+    public void decrXL(View v) {
         incr(-30);
     }
 
-    public void tapTempo(View v){
+    /**
+     * Tempo tap button
+     * @param v
+     */
+    public void tapTempo(View v) {
         Tktll.tap();
         updateUI();
     }
@@ -106,7 +137,8 @@ public class main extends Activity {
  */
 class tempoName {
     int[][] tempoNames;
-    public tempoName(){
+
+    public tempoName() {
         tempoNames = new int[8][2];
         tempoNames[0] = new int[]{0, R.string.largo};
         tempoNames[1] = new int[]{60, R.string.larghetto};
@@ -120,16 +152,17 @@ class tempoName {
 
     /**
      * Returns the matching tempo name
-     * @param c Context
+     *
+     * @param c   Context
      * @param bpm beats per minute
      * @return tempo name, empty string when none matches (would be strange)
      */
-    public String getName(Context c, int bpm){
-        for (int i = tempoNames.length-1; i>=0; i--) {
+    public String getName(Context c, int bpm) {
+        for (int i = tempoNames.length - 1; i >= 0; i--) {
             if (bpm >= tempoNames[i][0]) {
                 return (c.getString(tempoNames[i][1]));
             }
         }
-        return("");
+        return ("");
     }
 }

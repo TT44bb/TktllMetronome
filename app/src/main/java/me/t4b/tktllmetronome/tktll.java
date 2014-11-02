@@ -8,10 +8,6 @@ import android.util.Log;
 
 import java.io.IOException;
 import java.util.ArrayDeque;
-import java.util.Deque;
-import java.util.Stack;
-
-import static java.lang.Math.abs;
 
 /**
  * This class is the actual metronome, everything else is just UI and glue.
@@ -24,15 +20,15 @@ public class tktll {
     //sound files: 16 bit signed, linear pcm, 48kHz, mono, headerless
     private final int SAMPLE_RATE = 48000; //in Hz
     private final int MAX_PATTERN_LENGTH = 2; //in s
-    private final int MAX_PATTERN_FRAMES = MAX_PATTERN_LENGTH*SAMPLE_RATE;
+    private final int MAX_PATTERN_FRAMES = MAX_PATTERN_LENGTH * SAMPLE_RATE;
 
-    private final int MAX_PATTERN_SIZE = MAX_PATTERN_FRAMES *2; //bitsPerSample=2
+    private final int MAX_PATTERN_SIZE = MAX_PATTERN_FRAMES * 2; //bitsPerSample=2
     private int BEEP_SIZE;
     private int BEEP_PATTERNS;
     final double MIN_PATTERN_PER_SECOND = 1d / MAX_PATTERN_LENGTH; // don't use it for internal calculations
-    private int PATTERN_FRAMES=SAMPLE_RATE; //60bpm
+    private int PATTERN_FRAMES = SAMPLE_RATE; //60bpm
 
-    public boolean running=false;
+    public boolean running = false;
 
     //set up audio output
     AudioTrack beeper = new AudioTrack(AudioManager.STREAM_MUSIC, SAMPLE_RATE, AudioFormat.CHANNEL_OUT_MONO, AudioFormat.ENCODING_PCM_16BIT, MAX_PATTERN_SIZE, AudioTrack.MODE_STATIC);
@@ -47,23 +43,24 @@ public class tktll {
 
     /**
      * Initialize this Tktll with an audio resource. Here around the selection of different sounds could happen in the future
+     *
      * @param c Context
      */
-    public void init(Context c){
+    public void init(Context c) {
         try {
-            BEEP_SIZE = c.getResources().openRawResource(R.raw.sound1).read(beep, 0 , MAX_PATTERN_SIZE);
+            BEEP_SIZE = c.getResources().openRawResource(R.raw.sound1).read(beep, 0, MAX_PATTERN_SIZE);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        BEEP_PATTERNS = BEEP_SIZE/2;
-        beeper.write(beep, 0 , BEEP_SIZE);
+        BEEP_PATTERNS = BEEP_SIZE / 2;
+        beeper.write(beep, 0, BEEP_SIZE);
     }
 
     /**
      * Toggle between running/stopped states
      */
-    public void toggle(){
-        if(running){
+    public void toggle() {
+        if (running) {
             stop();
         } else {
             start();
@@ -73,30 +70,30 @@ public class tktll {
     /**
      * Stop this Tktll, trying to reset audio playback to beginning (TODO: The latter doesn't work, I think)
      */
-    public void stop(){
-        if(beeper.getPlayState() == AudioTrack.PLAYSTATE_PLAYING) {
+    public void stop() {
+        if (beeper.getPlayState() == AudioTrack.PLAYSTATE_PLAYING) {
             beeper.setPlaybackHeadPosition(0);
             beeper.pause();
-            running=false;
+            running = false;
         }
     }
 
     /**
      * Start this Tktll if beeper is ready, updating the loop points in the process
      */
-    public void start(){
-        if(!running && beeper.getState() == AudioTrack.STATE_INITIALIZED){
+    public void start() {
+        if (!running && beeper.getState() == AudioTrack.STATE_INITIALIZED) {
             updateBeeper();
             beeper.play();
-            running=true;
+            running = true;
         }
     }
 
     /**
      * Updates beeper loop, resetting PlaybackHeadPosition to 0
      */
-    public void updateBeeper(){
-        if(running) {
+    public void updateBeeper() {
+        if (running) {
             beeper.pause();
             //beeper.setPlaybackHeadPosition(BEEP_PATTERNS);
             //TODO: Doesn't seem to work with loop, and needs to go in another method now anyway
@@ -104,62 +101,67 @@ public class tktll {
 
         beeper.setLoopPoints(0, PATTERN_FRAMES, -1);
 
-        if(running) {
+        if (running) {
             beeper.play();
         }
     }
 
     /**
      * Updates PATTERN_FRAMES with a new value, doing some checks and updating the beeper afterwards
+     *
      * @param newValue
      */
-    private void setPATTERN_FRAMES(int newValue){
-        if(newValue > MAX_PATTERN_FRAMES || newValue < 1){ //TODO: Another limit than 1?
-            Log.i("tktll.setPATTERN_FRAMES","not changing, " + Integer.toString(newValue) + " out of bounds");
+    private void setPATTERN_FRAMES(int newValue) {
+        if (newValue > MAX_PATTERN_FRAMES || newValue < 1) { //TODO: Another limit than 1?
+            Log.i("tktll.setPATTERN_FRAMES", "not changing, " + Integer.toString(newValue) + " out of bounds");
             return;
         }
         PATTERN_FRAMES = newValue;
         updateBeeper();
-        Log.i("tktll.setPATTERN_FRAMES","Changed PATTERN_FRAMES to " + Integer.toString(PATTERN_FRAMES));
+        Log.i("tktll.setPATTERN_FRAMES", "Changed PATTERN_FRAMES to " + Integer.toString(PATTERN_FRAMES));
     }
 
     /**
      * Calls setPATTERN_FRAMES, doing the necessary unit conversions
+     *
      * @param patternsPerSecond
      */
-    public void setPatternsPerSecond(double patternsPerSecond){
+    public void setPatternsPerSecond(double patternsPerSecond) {
         int newPatternFrames = (int) ((SAMPLE_RATE / patternsPerSecond) + 0.5);
         setPATTERN_FRAMES(newPatternFrames);
     }
 
     /**
      * Returns the number of patterns per second, doing the necessary unit conversion
+     *
      * @return
      */
-    public double getPatternsPerSecond(){
-        return(SAMPLE_RATE/(double)PATTERN_FRAMES);
+    public double getPatternsPerSecond() {
+        return (SAMPLE_RATE / (double) PATTERN_FRAMES);
     }
 
     /**
      * Changes the number patterns per second
+     *
      * @param diff difference in patterns per second
      */
-    public void incr(double diff){
+    public void incr(double diff) {
         setPatternsPerSecond(getPatternsPerSecond() + diff);
     }
 
     /**
      * Changes the number patterns per second
+     *
      * @param diff difference in patterns per minute
      */
-    public void incr(int diff){
-        setPatternsPerSecond(getPatternsPerSecond() + (diff/60d) );
+    public void incr(int diff) {
+        setPatternsPerSecond(getPatternsPerSecond() + (diff / 60d));
     }
 
     /**
      * Sets tempo to lowest possible
      */
-    public void setSlowestTempo(){
+    public void setSlowestTempo() {
         setPATTERN_FRAMES(MAX_PATTERN_FRAMES);
     }
 
@@ -170,27 +172,28 @@ public class tktll {
      */
     public void tap() {
         long now = System.nanoTime();
-        long sinceLastTap = now-lastTap;
+        long sinceLastTap = now - lastTap;
         lastTap = now;
-        if(sinceLastTap > MAX_PATTERN_LENGTH*1000*1000*1000){
+        if (sinceLastTap > MAX_PATTERN_LENGTH * 1000 * 1000 * 1000) {
             lastTappedIntervals.clear();
-            Log.d("tktll.tap","cleared lastTappedIntervals");
+            Log.d("tktll.tap", "cleared lastTappedIntervals");
             return;
         }
-        lastTappedIntervals.push((int)(sinceLastTap*SAMPLE_RATE/1000000000));
-        if(lastTappedIntervals.size() > MAX_AVERAGED_TAPS) lastTappedIntervals.removeLast();
-        int summedIntervals=0;
-        float i=0;
-        float n=0;
-        if(lastTappedIntervals.size() == 0) Log.e("tktll.tap", "lastTappedIntervals is empty, this should not be possible, will probably crash");
-        for(int interval : lastTappedIntervals){
-            i+=AVERAGED_TAP_VALUING;
-            n+=i;
-            summedIntervals += i*interval;
+        lastTappedIntervals.push((int) (sinceLastTap * SAMPLE_RATE / 1000000000));
+        if (lastTappedIntervals.size() > MAX_AVERAGED_TAPS) lastTappedIntervals.removeLast();
+        int summedIntervals = 0;
+        float i = 0;
+        float n = 0;
+        if (lastTappedIntervals.size() == 0)
+            Log.e("tktll.tap", "lastTappedIntervals is empty, this should not be possible, will probably crash");
+        for (int interval : lastTappedIntervals) {
+            i += AVERAGED_TAP_VALUING;
+            n += i;
+            summedIntervals += i * interval;
         }
         int averagedInterval = (int) (summedIntervals / n + 0.5);
         setPATTERN_FRAMES(averagedInterval);
-        Log.v("tktll.tap","Last interval: " + Integer.toString(lastTappedIntervals.getFirst()) + "   averageInterval: " + Integer.toString(averagedInterval));
+        Log.v("tktll.tap", "Last interval: " + Integer.toString(lastTappedIntervals.getFirst()) + "   averageInterval: " + Integer.toString(averagedInterval));
         return;
     }
 }
