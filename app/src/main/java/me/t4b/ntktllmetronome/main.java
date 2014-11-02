@@ -50,10 +50,10 @@ public class main extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void toggleTktll(View v){
-        Tktll.toggle();
-    }
 
+    /**
+     * Updates the UI with new values
+     */
     private void updateUI(){
         TextView field = (TextView)findViewById(R.id.bpmValue);
         field.setText(String.valueOf((int)(Tktll.getPatternsPerSecond()*60+0.5)));
@@ -61,9 +61,20 @@ public class main extends Activity {
         field.setText(classicalTempos.getName(this, (int) (Tktll.getPatternsPerSecond() * 60 + 0.5)));
     }
 
+    /**
+     * Handles speed changes
+     * @param diff
+     */
     public void incr(int diff){
         Tktll.incr(diff);
         updateUI();
+    }
+
+
+    //UI callbacks
+
+    public void toggleTktll(View v){
+        Tktll.toggle();
     }
 
     public void incr(View v){
@@ -82,8 +93,16 @@ public class main extends Activity {
         incr(-10);
     }
 
+    public void tapTempo(View v){
+        Tktll.tap();
+    }
+
 }
 
+
+/**
+ * Class containing the tempo names, separated because maybe I could support other (or no) names in the future
+ */
 class tempoName {
     int[][] tempoNames;
     public tempoName(){
@@ -98,6 +117,12 @@ class tempoName {
         tempoNames[7] = new int[]{200, R.string.prestissimo};
     }
 
+    /**
+     * Returns the matching tempo name
+     * @param c Context
+     * @param bpm beats per minute
+     * @return tempo name, empty string when none matches (would be strange)
+     */
     public String getName(Context c, int bpm){
         for (int i = tempoNames.length-1; i>=0; i--) {
             if (bpm >= tempoNames[i][0]) {

@@ -12,7 +12,9 @@
     <android.gesture.GestureOverlayView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/tempoGesture">
+        android:id="@+id/tempoGesture"
+        android:clickable="true"
+        android:onClick="tapTempo">
 
         <LinearLayout
             android:layout_width="fill_parent"
