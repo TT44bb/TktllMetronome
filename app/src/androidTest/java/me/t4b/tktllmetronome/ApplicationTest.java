@@ -1,4 +1,4 @@
-package me.t4b.ntktllmetronome;
+package me.t4b.tktllmetronome;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

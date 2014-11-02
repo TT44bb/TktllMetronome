@@ -1,4 +1,4 @@
-package me.t4b.ntktllmetronome;
+package me.t4b.tktllmetronome;
 
 import android.content.Context;
 import android.media.AudioFormat;

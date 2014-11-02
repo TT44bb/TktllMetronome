@@ -1,20 +1,12 @@
-package me.t4b.ntktllmetronome;
+package me.t4b.tktllmetronome;
 
 import android.app.Activity;
 import android.content.Context;
-import android.media.AudioFormat;
-import android.media.AudioManager;
-import android.media.AudioTrack;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-
-import org.w3c.dom.Text;
-
-import java.io.IOException;
-import java.util.Hashtable;
 
 public class main extends Activity {
     tktll Tktll;
