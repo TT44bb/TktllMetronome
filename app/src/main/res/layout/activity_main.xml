@@ -1,7 +1,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="fill_parent"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
@@ -9,22 +9,21 @@
     android:orientation="vertical"
     tools:context=".Main$PlaceholderFragment">
 
-    <android.gesture.GestureOverlayView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/tempoGesture"
-        android:clickable="true"
-        android:onClick="tapTempo">
+
 
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:id="@+id/tempoLinLay">
 
-            <LinearLayout
-                android:layout_width="wrap_content"
+            <android.gesture.GestureOverlayView
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical" >
+                android:id="@+id/tempoGesture">
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/tempo"
@@ -60,126 +59,93 @@
                     android:text="@string/larghetto"
                     android:layout_gravity="center" />
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    style="?android:attr/buttonBarStyle"
-                    android:id="@+id/tempoModBar">
-
-                    <Button
-                        android:id="@+id/incrL"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/incrementL"
-                        style="?android:attr/buttonBarButtonStyle"
-                        android:onClick="incrL" />
-
-                    <Button
-                        android:id="@+id/incr"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/increment"
-                        style="?android:attr/buttonBarButtonStyle"
-                        android:onClick="incr" />
-
-                    <Button
-                        android:id="@+id/decr"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/decrement"
-                        style="?android:attr/buttonBarButtonStyle"
-                        android:onClick="decr" />
-                    <Button
-                        android:id="@+id/decrL"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/decrementL"
-                        style="?android:attr/buttonBarButtonStyle"
-                        android:onClick="decrL" />
-                </LinearLayout>
             </LinearLayout>
-
-            <Button
-                android:id="@+id/tap"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:text="@string/tap"
-                android:clickable="true"
-                android:focusable="false" />
-        </LinearLayout>
-
     </android.gesture.GestureOverlayView>
+
+        </LinearLayout>
 
 
     <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        style="?android:attr/buttonBarStyle"
+        android:id="@+id/tempoModBar"
+        android:layout_gravity="center"
         android:orientation="horizontal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/counter"
-                android:id="@+id/textView"
-                android:textStyle="bold"
-                android:layout_gravity="center" />
-
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-                <LinearLayout
-                    android:orientation="vertical"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/bar"
-                        android:id="@+id/textView2" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/barValue"
-                        android:id="@+id/textView3" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:orientation="vertical"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/beat"
-                        android:id="@+id/textView4" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/beatValue"
-                        android:id="@+id/textView5" />
-                </LinearLayout>
-            </LinearLayout>
-
-        </LinearLayout>
+        android:gravity="center">
 
         <Button
-                android:layout_width="wrap_content"
+            android:id="@+id/incrXL"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/incrementXL"
+            style="?android:attr/buttonBarButtonStyle"
+            android:onClick="incrXL"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_weight="1" />
+
+        <Button
+            android:id="@+id/incrL"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/incrementL"
+            style="?android:attr/buttonBarButtonStyle"
+            android:onClick="incrL"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_weight="1" />
+
+        <Button
+            android:id="@+id/incr"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/increment"
+            style="?android:attr/buttonBarButtonStyle"
+            android:onClick="incr"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_weight="1" />
+
+        <Button
+            android:id="@+id/decr"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/decrement"
+            style="?android:attr/buttonBarButtonStyle"
+            android:onClick="decr"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_weight="1" />
+        <Button
+            android:id="@+id/decrL"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/decrementL"
+            style="?android:attr/buttonBarButtonStyle"
+            android:onClick="decrL"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_weight="1" />
+        <Button
+            android:id="@+id/decrXL"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/decrementXL"
+            style="?android:attr/buttonBarButtonStyle"
+            android:onClick="decrXL"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_weight="1" />
+    </LinearLayout>
+
+        <Button
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/toggleTktll"
                 android:id="@+id/button"
-            android:onClick="toggleTktll" />
-    </LinearLayout>
+            android:onClick="toggleTktll"
+            android:layout_gravity="center"
+            android:textSize="30sp" />
 
 </LinearLayout>
-

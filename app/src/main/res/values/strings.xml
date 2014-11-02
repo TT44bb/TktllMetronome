@@ -10,6 +10,8 @@
     <string name="increment">+</string>
     <string name="decrement">-</string>
     <string name="incrementL">++</string>
+    <string name="incrementXL">+++</string>
+    <string name="decrementXL">---</string>
     <string name="decrementL">--</string>
     <string name="counter">Counter</string>
     <string name="bar">Bar</string>

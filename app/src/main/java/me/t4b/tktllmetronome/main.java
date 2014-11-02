@@ -22,7 +22,7 @@ public class main extends Activity {
         updateUI();
     }
 
-
+/*
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -41,7 +41,7 @@ public class main extends Activity {
         }
         return super.onOptionsItemSelected(item);
     }
-
+*/
 
     /**
      * Updates the UI with new values
@@ -77,12 +77,20 @@ public class main extends Activity {
         incr(10);
     }
 
+    public void incrXL(View v){
+        incr(30);
+    }
+
     public void decr(View v){
         incr(-1);
     }
 
     public void decrL(View v){
         incr(-10);
+    }
+
+    public void decrXL(View v){
+        incr(-30);
     }
 
     public void tapTempo(View v){
