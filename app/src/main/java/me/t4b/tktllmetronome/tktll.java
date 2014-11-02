@@ -4,8 +4,14 @@ import android.content.Context;
 import android.media.AudioFormat;
 import android.media.AudioManager;
 import android.media.AudioTrack;
+import android.util.Log;
 
 import java.io.IOException;
+import java.util.ArrayDeque;
+import java.util.Deque;
+import java.util.Stack;
+
+import static java.lang.Math.abs;
 
 /**
  * This class is the actual metronome, everything else is just UI and glue.
@@ -31,6 +37,13 @@ public class tktll {
     //set up audio output
     AudioTrack beeper = new AudioTrack(AudioManager.STREAM_MUSIC, SAMPLE_RATE, AudioFormat.CHANNEL_OUT_MONO, AudioFormat.ENCODING_PCM_16BIT, MAX_PATTERN_SIZE, AudioTrack.MODE_STATIC);
     byte[] beep = new byte[MAX_PATTERN_SIZE];
+
+    //tapping bpm selection
+    int TAP_AVERAGING_COUNT = 2;
+    ArrayDeque<Integer> lastTappedIntervals = new ArrayDeque<Integer>(TAP_AVERAGING_COUNT); //length in frames
+    long lastTap; //in us
+    int MAX_AVERAGED_TAPS = 10;
+    float AVERAGED_TAP_VALUING = 0.5f;
 
     /**
      * Initialize this Tktll with an audio resource. Here around the selection of different sounds could happen in the future
@@ -101,10 +114,13 @@ public class tktll {
      * @param newValue
      */
     private void setPATTERN_FRAMES(int newValue){
-        if(newValue <= MAX_PATTERN_FRAMES){
-            PATTERN_FRAMES = newValue;
+        if(newValue > MAX_PATTERN_FRAMES || newValue < 1){ //TODO: Another limit than 1?
+            Log.i("tktll.setPATTERN_FRAMES","not changing, " + Integer.toString(newValue) + " out of bounds");
+            return;
         }
+        PATTERN_FRAMES = newValue;
         updateBeeper();
+        Log.i("tktll.setPATTERN_FRAMES","Changed PATTERN_FRAMES to " + Integer.toString(PATTERN_FRAMES));
     }
 
     /**
@@ -148,9 +164,33 @@ public class tktll {
     }
 
     /**
-     * TODO, will be used to set tempo by tapping. Called on each tap.
+     * Adjusts PATTERN_LENGTH based on the intervals between calls to this method.
+     * Averages the last MAX_AVERAGED_TAPS calls, resetting to zero when the last interval is bigger than MAX_PATTERN_LENGTH.
+     * Newer intervals are valued more when averaging, the factor depends on AVERAGED_TAP_VALUING which should be >0.
      */
     public void tap() {
-
+        long now = System.nanoTime();
+        long sinceLastTap = now-lastTap;
+        lastTap = now;
+        if(sinceLastTap > MAX_PATTERN_LENGTH*1000*1000*1000){
+            lastTappedIntervals.clear();
+            Log.d("tktll.tap","cleared lastTappedIntervals");
+            return;
+        }
+        lastTappedIntervals.push((int)(sinceLastTap*SAMPLE_RATE/1000000000));
+        if(lastTappedIntervals.size() > MAX_AVERAGED_TAPS) lastTappedIntervals.removeLast();
+        int summedIntervals=0;
+        float i=0;
+        float n=0;
+        if(lastTappedIntervals.size() == 0) Log.e("tktll.tap", "lastTappedIntervals is empty, this should not be possible, will probably crash");
+        for(int interval : lastTappedIntervals){
+            i+=AVERAGED_TAP_VALUING;
+            n+=i;
+            summedIntervals += i*interval;
+        }
+        int averagedInterval = (int) (summedIntervals / n + 0.5);
+        setPATTERN_FRAMES(averagedInterval);
+        Log.v("tktll.tap","Last interval: " + Integer.toString(lastTappedIntervals.getFirst()) + "   averageInterval: " + Integer.toString(averagedInterval));
+        return;
     }
 }

@@ -87,6 +87,7 @@ public class main extends Activity {
 
     public void tapTempo(View v){
         Tktll.tap();
+        updateUI();
     }
 
 }
