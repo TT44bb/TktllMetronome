@@ -141,11 +141,11 @@
 
         <Button
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/toggleTktll"
-                android:id="@+id/button"
+                android:layout_height="match_parent"
+                android:text="@string/startTktll"
+                android:id="@+id/toggleTktll"
             android:onClick="toggleTktll"
-            android:layout_gravity="center"
+            android:layout_gravity="center_horizontal|bottom"
             android:textSize="30sp" />
 
 </LinearLayout>

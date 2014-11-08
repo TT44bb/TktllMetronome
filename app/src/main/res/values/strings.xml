@@ -6,19 +6,25 @@
     <string name="tempo">Tempo</string>
     <string name="tap">Tap</string>
     <string name="bpm">bpm</string>
-    <string name="bpmValue">xxx</string>
-    <string name="increment">+</string>
-    <string name="decrement">-</string>
-    <string name="incrementL">++</string>
-    <string name="incrementXL">+++</string>
-    <string name="decrementXL">---</string>
-    <string name="decrementL">--</string>
+    <string name="bpmValue">60</string>
+
+    <string name="increment">+1</string>
+    <string name="decrement">-1</string>
+    <string name="incrementL">+10</string>
+    <string name="decrementL">-10</string>
+    <string name="incrementXL">+30</string>
+    <string name="decrementXL">-30</string>
+
     <string name="counter">Counter</string>
     <string name="bar">Bar</string>
     <string name="barValue">xxx</string>
     <string name="beat">Beat</string>
     <string name="beatValue">xxx</string>
+
     <string name="toggleTktll">Toggle On/Off</string>
+    <string name="startTktll">Start</string>
+    <string name="stopTktll">Stop</string>
+
     <string name="largo">Largo</string>
     <string name="larghetto">Larghetto</string>
     <string name="adagio">Adagio</string>

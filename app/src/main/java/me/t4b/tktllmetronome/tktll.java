@@ -48,7 +48,7 @@ public class tktll {
      */
     public void init(Context c) {
         try {
-            BEEP_SIZE = c.getResources().openRawResource(R.raw.sound1).read(beep, 0, MAX_PATTERN_SIZE);
+            BEEP_SIZE = c.getResources().openRawResource(R.raw.sound2).read(beep, 0, MAX_PATTERN_SIZE);
         } catch (IOException e) {
             e.printStackTrace();
         }
